@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Micro Project: Weather app</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="card">
+  <div class="search">
+    <input type="text" placeholder="Enter City Name" spellcheck="false">
+    <button>
+      <img src="C:\Users\Kesha\OneDrive\Pictures\search icon .png" alt="search icon">
+    </button>
+  </div>
+  <div class="Weather">
+    <pre>
+      <img src="C:/Users/Kesha/OneDrive/Pictures/CLEAR.PNG" height="150" class="Weather-icon" alt="Weather Icon">  
+    </pre>
+    <h1 class="temp">16°C</h1>
+    <h2 class="city">Gwalior</h2>
+    <div class="details">
+      <div class="col">
+        <img src="C:/Users/Kesha/OneDrive/Pictures/humidity.png" height="100" alt="Humidity Icon">
+        <div>
+          <p class="humidity">74%</p>
+          <p>Humidity</p>
+        </div>
+      </div>
+      <div class="col">
+        <img src="C:/Users/Kesha/OneDrive/Pictures/wind speed.png" height="100" alt="wind speed Icon">
+        <div>
+          <p class="wind">5 kmph</p>
+          <p>Wind speed</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const apiKey = "9a96dc8e688b3e1158cc5ae5a56fd03a";
+const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
+
+const searchbox = document.querySelector(".search input");
+const searchBtn = document.querySelector(".search button");
+const weatherIcon = document.querySelector(".Weather-icon");
+
+async function checkWeather(city) {
+  const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
+  const data = await response.json();
+  console.log(data);
+
+  document.querySelector(".city").innerHTML = data.name;
+  document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
+  document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+  document.querySelector(".wind").innerHTML = data.wind.speed + " kmph";
+
+  if (data.weather[0].main.toLowerCase() == "clouds") {
+    weatherIcon.src = "C:/Users/Kesha/OneDrive/Pictures/cloud.png";
+  } else if (data.weather[0].main.toLowerCase() == "rain") {
+    weatherIcon.src = "C:/Users/Kesha/OneDrive/Pictures/rain.png";
+  }else if (data.weather[0].main.toLowerCase() == "SNOWFALL") {
+    weatherIcon.src = "C:/Users/Kesha/OneDrive/Pictures/SNOWFALL.png";
+  }else if (data.weather[0].main.toLowerCase() == "sun") {
+    weatherIcon.src = "C:/Users/Kesha/OneDrive/Pictures/sun.png";
+  } else if (data.weather[0].main.toLowerCase() == "clear") {
+    weatherIcon.src = "C:/Users/Kesha/OneDrive/Pictures/CLEAR.PNG";
+  }
+  document.querySelector(".Weather").style.display = "block";
+}
+
+searchBtn.addEventListener("click", () => {
+  checkWeather(searchbox.value);
+});
+
+
+
+</script>
+</body>
+</html>
